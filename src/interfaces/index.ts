@@ -3,6 +3,11 @@ export enum PaginationTypeEnum {
   TAKE_AND_SKIP = 'take',
 }
 
+export enum CountQueryTypeEnum {
+  RAW = 'raw',
+  ENTITY = 'entity',
+}
+
 export interface IPaginationOptions<CustomMetaType = IPaginationMeta> {
   /**
    * @default 10
@@ -30,7 +35,6 @@ export interface IPaginationOptions<CustomMetaType = IPaginationMeta> {
    * routingLabels for append in links (limit or/and page)
    */
   routingLabels?: IPaginationOptionsRoutingLabels;
-
   /**
    * @default PaginationTypeEnum.LIMIT
    * Used for changing query method to take/skip (defaults to limit/offset if no argument supplied)
@@ -46,10 +50,16 @@ export interface IPaginationOptions<CustomMetaType = IPaginationMeta> {
   /**
    * @default false
    * @link https://orkhan.gitbook.io/typeorm/docs/caching
-   *
+   *ddd
    * Enables or disables query result caching.
    */
   cacheQueries?: TypeORMCacheType;
+
+  /**
+   * @default CountQueryTypeEnum.RAW
+   * Used for count query with countQuery(builder, cacheOptions) which is RAW or builder.getCount() which is ENTITY
+   */
+  countQueryType?: CountQueryTypeEnum;
 }
 
 export type TypeORMCacheType =
