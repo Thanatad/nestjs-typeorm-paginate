@@ -19,15 +19,15 @@ Pagination helper method for TypeORM repositories or queryBuilders with strict t
 ## Install
 
 ```bash
-$ yarn add nestjs-typeorm-paginate
+$ pnpm add @thanatad/nestjs-typeorm-paginate
 ```
 or
 ```bash
-$ npm i nestjs-typeorm-paginate
+$ npm i @thanatad/nestjs-typeorm-paginate
 ```
 
-> If you're using typeorm^0.2.6 please use nestjs-typeorm-paginate^3.2.0
-> For typeorm^0.3.0 please use nestjs-typeorm-paginate^4.0.0
+> If you're using typeorm^0.2.6 please use @thanatad/nestjs-typeorm-paginate^3.2.0
+> For typeorm^0.3.0 please use @thanatad/nestjs-typeorm-paginate^4.0.0
 
 ## Usage
 
@@ -44,7 +44,7 @@ import {
   paginate,
   Pagination,
   IPaginationOptions,
-} from 'nestjs-typeorm-paginate';
+} from '@thanatad/nestjs-typeorm-paginate';
 
 @Injectable()
 export class CatService {
@@ -55,6 +55,32 @@ export class CatService {
 
   async paginate(options: IPaginationOptions): Promise<Pagination<CatEntity>> {
     return paginate<CatEntity>(this.repository, options);
+  }
+}
+```
+
+###### Repository with ENTITY or RAW
+
+```ts
+import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CatEntity } from './entities';
+import {
+  paginate,
+  Pagination,
+  IPaginationOptions,
+} from '@thanatad/nestjs-typeorm-paginate';
+
+@Injectable()
+export class CatService {
+  constructor(
+    @InjectRepository(CatEntity)
+    private readonly repository: Repository<CatEntity>,
+  ) {}
+
+  async paginate(options: IPaginationOptions): Promise<Pagination<CatEntity>> {
+    return paginate<CatEntity>(this.repository, {...options, countQueryType: CountQueryTypeEnum.ENTITY});
   }
 }
 ```
@@ -70,7 +96,7 @@ import {
   paginate,
   Pagination,
   IPaginationOptions,
-} from 'nestjs-typeorm-paginate';
+} from '@thanatad/nestjs-typeorm-paginate';
 
 @Injectable()
 export class CatService {
@@ -94,7 +120,7 @@ export class CatService {
 import { Controller, DefaultValuePipe, Get, ParseIntPipe, Query } from '@nestjs/common';
 import { CatService } from './cat.service';
 import { CatEntity } from './cat.entity';
-import { Pagination } from 'nestjs-typeorm-paginate';
+import { Pagination } from '@thanatad/nestjs-typeorm-paginate';
 
 @Controller('cats')
 export class CatsController {
